@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "br.com.gabriellferreira.recipelist"
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+
+    flavorDimensions "environment"
+
+    productFlavors {
+        production { flavor ->
+            dimension "environment"
+            flavor.buildConfigField("String", "MARLEY_SPOON_CONTENTFUL_SPACE_ID", "\"kk2bw5ojx476\"")
+            flavor.buildConfigField("String", "MARLEY_SPOON_CONTENTFUL_ACCESS_TOKEN", "\"7ac531648a1b5e1dab6c18b0979f822a5aad0fe5f1109829b8a197eb2be4b84c\"")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // Support Library
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "com.google.android.material:material:1.1.0"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    // Retrofit and OkHttp
+    def retrofitVersion = '2.6.2'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    // Dagger
+    def dagger2Version = "2.25.2"
+    implementation "com.google.dagger:dagger:$dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$dagger2Version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger2Version"
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    //Pagination
+    implementation 'android.arch.paging:runtime:2.1.0'
+
+    // Contentful
+    implementation 'com.contentful.java:java-sdk:10.4.1'
+    kapt 'com.contentful.vault:compiler:3.2.1'
+    implementation 'com.contentful.vault:core:3.2.1'
+    implementation 'com.safframework.log:saf-logginginterceptor:1.4.2'
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation 'org.mockito:mockito-inline:2.27.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.assertj:assertj-core:3.12.2"
+}
+
+tasks.whenTaskAdded { task ->
+    task.dependsOn rootProject.getTasksByName("detektCheck", false).first()
+}
