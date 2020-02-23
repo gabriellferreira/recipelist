@@ -6,18 +6,21 @@ import br.com.gabriellferreira.recipelist.domain.model.NetworkState
 import br.com.gabriellferreira.recipelist.domain.model.Retryable
 import br.com.gabriellferreira.recipelist.domain.usecase.RecipeUseCase
 import br.com.gabriellferreira.recipelist.presentation.model.RecipeItem
+import io.reactivex.Scheduler
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 open class RecipeListViewModel @Inject constructor(
-    private val useCase: RecipeUseCase
+    private val useCase: RecipeUseCase,
+    private val schedulers: Scheduler
 ) : ViewModel() {
 
     var itemList: MutableLiveData<NetworkState<List<RecipeItem>>> = MutableLiveData()
 
     fun fetchRecipeList() {
         useCase.fetchRecipeList()
+            .subscribeOn(schedulers)
             .subscribe(object : SingleObserver<List<RecipeItem>> {
                 override fun onSuccess(t: List<RecipeItem>) {
                     itemList.postValue(NetworkState.Loaded(t))

@@ -9,6 +9,7 @@ import dagger.MapKey
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import io.reactivex.Scheduler
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -18,15 +19,15 @@ class ViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(RecipeListViewModel::class)
-    fun getRecipeListViewModel(useCase: RecipeUseCase): ViewModel {
-        return RecipeListViewModel(useCase)
+    fun getRecipeListViewModel(useCase: RecipeUseCase, scheduler: Scheduler): ViewModel {
+        return RecipeListViewModel(useCase, scheduler)
     }
 
     @Provides
     @IntoMap
     @ViewModelKey(RecipeDetailViewModel::class)
-    fun getRecipeDetailViewModel(useCase: RecipeUseCase): ViewModel {
-        return RecipeDetailViewModel(useCase)
+    fun getRecipeDetailViewModel(useCase: RecipeUseCase, scheduler: Scheduler): ViewModel {
+        return RecipeDetailViewModel(useCase, scheduler)
     }
 
     @Provides
