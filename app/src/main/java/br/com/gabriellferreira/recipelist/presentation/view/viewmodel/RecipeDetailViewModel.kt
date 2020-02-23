@@ -10,33 +10,32 @@ import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-open class RecipeListViewModel @Inject constructor(
+class RecipeDetailViewModel @Inject constructor(
     private val useCase: RecipeUseCase
 ) : ViewModel() {
 
-    var itemList: MutableLiveData<NetworkState<List<RecipeItem>>> = MutableLiveData()
+    val recipe: MutableLiveData<NetworkState<RecipeItem>> = MutableLiveData()
 
-    fun fetchRecipeList() {
-        useCase.fetchRecipeList()
-            .subscribe(object : SingleObserver<List<RecipeItem>> {
-                override fun onSuccess(t: List<RecipeItem>) {
-                    itemList.postValue(NetworkState.Loaded(t))
+    fun fetchRecipe(recipeId: String) {
+        useCase.fetchRecipe(recipeId)
+            .subscribe(object : SingleObserver<RecipeItem> {
+                override fun onSuccess(item: RecipeItem) {
+                    recipe.postValue(NetworkState.Loaded(item))
                 }
 
                 override fun onSubscribe(d: Disposable) {
-                    itemList.postValue(NetworkState.InProgress)
+                    recipe.postValue(NetworkState.InProgress)
                 }
 
                 override fun onError(e: Throwable) {
-                    itemList.postValue(
+                    recipe.postValue(
                         NetworkState.Error(object : Retryable {
                             override fun retry() {
-                                fetchRecipeList()
+                                fetchRecipe(recipeId)
                             }
                         })
                     )
                 }
-
             })
     }
 }

@@ -1,12 +1,13 @@
 package br.com.gabriellferreira.recipelist.presentation.model
 
-class RecipeItem (
+class RecipeItem(
     val id: String,
     val title: String,
-    val calories: Double,
     val description: String,
-    val chef: String,
+    val caloriesString: String,
+    val chefName: String,
+    val chefNameString: String,
     val tags: List<String>,
     val thumbnailUrl: String,
-    val imageUrl: String
+    val tagsString: String
 )

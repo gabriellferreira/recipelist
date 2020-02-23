@@ -1,6 +1,7 @@
 package br.com.gabriellferreira.recipelist.presentation.di
 
 import br.com.gabriellferreira.recipelist.presentation.di.scope.ControllerScope
+import br.com.gabriellferreira.recipelist.presentation.view.activity.RecipeDetailActivity
 import br.com.gabriellferreira.recipelist.presentation.view.activity.RecipeListActivity
 import dagger.Subcomponent
 
@@ -10,4 +11,6 @@ interface ControllerComponent {
 
     // View
     fun inject(recipeListActivity: RecipeListActivity)
+
+    fun inject(recipeListActivity: RecipeDetailActivity)
 }

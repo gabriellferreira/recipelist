@@ -57,9 +57,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    //Pagination
-    implementation 'android.arch.paging:runtime:2.1.0'
-
     // Contentful
     implementation 'com.contentful.java:java-sdk:10.4.1'
     kapt 'com.contentful.vault:compiler:3.2.1'

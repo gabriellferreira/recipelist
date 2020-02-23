@@ -11,13 +11,10 @@ class RecipeItemDiffUtil : DiffUtil.ItemCallback<RecipeItem>() {
     }
 
     override fun areContentsTheSame(oldItem: RecipeItem, newItem: RecipeItem): Boolean {
-        return oldItem.description == newItem.description &&
-                oldItem.title == newItem.title &&
-                oldItem.calories == newItem.calories &&
-                oldItem.description == newItem.description &&
-                oldItem.chef == newItem.chef &&
+        return oldItem.title == newItem.title &&
+                oldItem.caloriesString == newItem.caloriesString &&
+                oldItem.chefName == newItem.chefName &&
                 oldItem.tags == newItem.tags &&
-                oldItem.thumbnailUrl == newItem.thumbnailUrl &&
-                oldItem.imageUrl == newItem.imageUrl
+                oldItem.thumbnailUrl == newItem.thumbnailUrl
     }
 }

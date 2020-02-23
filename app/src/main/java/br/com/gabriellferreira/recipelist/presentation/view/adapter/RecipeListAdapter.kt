@@ -2,17 +2,18 @@ package br.com.gabriellferreira.recipelist.presentation.view.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gabriellferreira.recipelist.R
 import br.com.gabriellferreira.recipelist.domain.itemcallback.RecipeItemDiffUtil
 import br.com.gabriellferreira.recipelist.presentation.model.RecipeItem
 import br.com.gabriellferreira.recipelist.presentation.util.extension.inflate
+import br.com.gabriellferreira.recipelist.presentation.util.extension.loadCenterCrop
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_recipe.view.*
 
 class RecipeListAdapter :
-    PagedListAdapter<RecipeItem, RecipeListAdapter.ViewHolder>(RecipeItemDiffUtil()) {
+    ListAdapter<RecipeItem, RecipeListAdapter.ViewHolder>(RecipeItemDiffUtil()) {
 
     val onItemClickSubject: PublishSubject<RecipeItem> = PublishSubject.create<RecipeItem>()
 
@@ -36,7 +37,8 @@ class RecipeListAdapter :
                 onItemClickSubject.onNext(model)
             }
             view.item_recipe_title?.text = model.title
-            view.item_recipe_description?.text = model.description
+            view.item_recipe_image?.loadCenterCrop(model.thumbnailUrl)
+            view.item_recipe_calories?.text = model.caloriesString
         }
     }
 }

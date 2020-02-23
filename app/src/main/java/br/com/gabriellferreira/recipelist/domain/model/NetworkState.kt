@@ -1,10 +1,9 @@
 package br.com.gabriellferreira.recipelist.domain.model
 
-class NetworkState(
-    val state: State,
-    val retryable: Retryable? = null
-){
-    enum class State{
-        IN_PROGRESS, LOADED, ERROR
-    }
+
+sealed class NetworkState<out T> {
+
+    object InProgress : NetworkState<Nothing>()
+    class Loaded<T>(val result: T) : NetworkState<T>()
+    class Error(val retryable: Retryable? = null) : NetworkState<Nothing>()
 }

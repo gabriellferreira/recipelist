@@ -2,11 +2,8 @@ package br.com.gabriellferreira.recipelist.presentation.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.paging.PagedList
 import br.com.gabriellferreira.recipelist.R
 import br.com.gabriellferreira.recipelist.domain.model.NetworkState
-import br.com.gabriellferreira.recipelist.domain.model.NetworkState.State.*
-import br.com.gabriellferreira.recipelist.domain.model.Retryable
 import br.com.gabriellferreira.recipelist.presentation.di.AppApplication
 import br.com.gabriellferreira.recipelist.presentation.di.ControllerModule
 import br.com.gabriellferreira.recipelist.presentation.model.RecipeItem
@@ -18,7 +15,6 @@ import br.com.gabriellferreira.recipelist.presentation.view.viewmodel.RecipeList
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_recipe_list.*
 import javax.inject.Inject
-
 
 class RecipeListActivity : AppCompatActivity() {
 
@@ -39,6 +35,7 @@ class RecipeListActivity : AppCompatActivity() {
         mControllerComponent.inject(this)
         setupRecycler()
         initObservers()
+        viewModel.fetchRecipeList()
     }
 
     override fun onDestroy() {
@@ -47,52 +44,39 @@ class RecipeListActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.itemPagedList.observe(this,
-            androidx.lifecycle.Observer<PagedList<RecipeItem>> { items ->
-                adapter.submitList(items)
-            })
-        viewModel.networkState.observe(this,
-            androidx.lifecycle.Observer<NetworkState> {
+        viewModel.itemList.observe(this,
+            androidx.lifecycle.Observer<NetworkState<List<RecipeItem>>> {
                 recipe_list_error?.setOnClickListener(null)
-                when (it.state) {
-                    LOADED -> {
+                when (it) {
+                    is NetworkState.Loaded -> {
                         recipe_list_recycler?.show()
                         recipe_list_error?.hide()
                         recipe_list_progress?.hide()
+                        adapter.submitList(it.result)
                     }
-                    IN_PROGRESS -> {
+                    is NetworkState.InProgress -> {
                         if (adapter.itemCount == 0) {
-                            recipe_list_recycler?.show()
+                            recipe_list_recycler?.hide()
                             recipe_list_error?.hide()
-                            recipe_list_progress?.hide()
+                            recipe_list_progress?.show()
                         }
                     }
-                    ERROR -> {
-                        if (adapter.itemCount > 0) {
-                            recipe_list_progress?.hide()
-                            recipe_list_error?.hide()
-                            showRetrySnackbar(it.retryable)
-                        } else {
+                    is NetworkState.Error -> {
+                        if (adapter.itemCount == 0) {
                             recipe_list_recycler?.hide()
                             recipe_list_progress?.hide()
                             recipe_list_error?.show()
-                            showRetrySnackbar(it.retryable)
                         }
+                        showRetrySnackbar(recipe_list_parent, R.string.generic_retry, it.retryable)
                     }
                 }
             })
     }
 
-    private fun showRetrySnackbar(retryable: Retryable?) {
-        retryable?.let {
-            showRetrySnackbar(recipe_list_parent, getString(R.string.generic_retry), it)
-        }
-    }
-
     private fun setupRecycler() {
         recipe_list_recycler?.adapter = adapter
         clicksDisposable = adapter.onItemClickSubject.subscribe {
-            //            openUrlSelectorDialog(it)
+            RecipeDetailActivity.start(this, it.id)
         }
     }
 }

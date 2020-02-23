@@ -13,13 +13,11 @@ class RecipeDataRepository @Inject constructor(
     private val mapper: RecipeMapper
 ) : RecipeRepository {
 
-    override fun fetchRecipeList(page: Int, itemsPerPage: Int): Single<List<Recipe>> =
+    override fun fetchRecipeList(): Single<List<Recipe>> =
         Single.create<List<Recipe>> { emitter ->
             val result = client.fetch(CDAEntry::class.java)
                 .orderBy("sys.createdAt")
-                .limit(itemsPerPage)
                 .withContentType("recipe")
-                .skip((page - 1) * itemsPerPage)
                 .all()
 
             val list = result.items().map {
@@ -27,5 +25,14 @@ class RecipeDataRepository @Inject constructor(
             }
 
             emitter.onSuccess(list)
+        }
+
+    override fun fetchRecipe(id: String): Single<Recipe> =
+        Single.create<Recipe> { emitter ->
+            val result = client.fetch(CDAEntry::class.java)
+                .withContentType("recipe")
+                .one(id)
+
+            emitter.onSuccess(mapper.map(result))
         }
 }

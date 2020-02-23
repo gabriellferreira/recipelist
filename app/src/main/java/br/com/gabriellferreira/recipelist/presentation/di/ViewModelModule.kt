@@ -2,7 +2,8 @@ package br.com.gabriellferreira.recipelist.presentation.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import br.com.gabriellferreira.recipelist.domain.datasource.RecipeDataSourceFactory
+import br.com.gabriellferreira.recipelist.domain.usecase.RecipeUseCase
+import br.com.gabriellferreira.recipelist.presentation.view.viewmodel.RecipeDetailViewModel
 import br.com.gabriellferreira.recipelist.presentation.view.viewmodel.RecipeListViewModel
 import dagger.MapKey
 import dagger.Module
@@ -17,8 +18,15 @@ class ViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(RecipeListViewModel::class)
-    fun getRecipeListViewModel(dataSourceFactory: RecipeDataSourceFactory): ViewModel {
-        return RecipeListViewModel(dataSourceFactory)
+    fun getRecipeListViewModel(useCase: RecipeUseCase): ViewModel {
+        return RecipeListViewModel(useCase)
+    }
+
+    @Provides
+    @IntoMap
+    @ViewModelKey(RecipeDetailViewModel::class)
+    fun getRecipeDetailViewModel(useCase: RecipeUseCase): ViewModel {
+        return RecipeDetailViewModel(useCase)
     }
 
     @Provides

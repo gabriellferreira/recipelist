@@ -1,5 +1,6 @@
 package br.com.gabriellferreira.recipelist.presentation.util.extension
 
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
@@ -8,10 +9,11 @@ import com.google.android.material.snackbar.Snackbar
 
 fun AppCompatActivity.showRetrySnackbar(
     parentView: CoordinatorLayout?,
-    text: String,
-    retryable: Retryable
+    @StringRes
+    text: Int,
+    retryable: Retryable?
 ) {
-    parentView?.let {
+    if (parentView != null && retryable != null) {
         val actionColor =
             ResourcesCompat.getColor(resources, android.R.color.holo_orange_light, theme)
         Snackbar.make(parentView, text, Snackbar.LENGTH_INDEFINITE)

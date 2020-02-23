@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Recipe List</string>
-    <string name="recipe_list_error_msg">Ops, something went wrong! :/</string>
+    <string name="generic_error_msg">Ops, something went wrong! :/</string>
     <string name="generic_retry">Do you want to try again?</string>
+    <string name="accessibility_item_recipe_image">Recipe image</string>
+    <string name="recipe_calories">%d kcal</string>
+    <string name="recipe_chef">Chef: %s</string>
+    <string name="recipe_tags">Tags: %s</string>
 </resources>
