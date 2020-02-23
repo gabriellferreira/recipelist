@@ -24,9 +24,8 @@
                 android:layout_height="wrap_content"
                 tools:text="Grilled Steak &amp; Vegetables with Cilantro-Jalapeno Dressing" />
 
-            <TextView
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/recipe_detail_tags"
-                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />

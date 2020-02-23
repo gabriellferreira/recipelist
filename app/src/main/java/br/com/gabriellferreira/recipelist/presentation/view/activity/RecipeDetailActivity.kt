@@ -16,11 +16,10 @@ import br.com.gabriellferreira.recipelist.presentation.util.extension.loadCenter
 import br.com.gabriellferreira.recipelist.presentation.util.extension.show
 import br.com.gabriellferreira.recipelist.presentation.util.extension.showRetrySnackbar
 import br.com.gabriellferreira.recipelist.presentation.view.viewmodel.RecipeDetailViewModel
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_recipe_detail.*
 import kotlinx.android.synthetic.main.content_recipe_detail.*
 import javax.inject.Inject
-import kotlin.math.abs
 
 
 class RecipeDetailActivity @Inject constructor() : AppCompatActivity() {
@@ -66,9 +65,6 @@ class RecipeDetailActivity @Inject constructor() : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-        recipe_detail_app_bar.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            toolbar_title.alpha = abs(verticalOffset / appBarLayout.totalScrollRange.toFloat())
-        })
     }
 
     private fun initObservers() {
@@ -103,11 +99,16 @@ class RecipeDetailActivity @Inject constructor() : AppCompatActivity() {
 
     private fun initView(result: RecipeItem) {
         recipe_detail_title?.text = result.title
-        toolbar_title?.text = result.title
         recipe_detail_image?.loadCenterCrop(result.thumbnailUrl)
         recipe_detail_description?.text = result.description
         recipe_detail_chef?.text = result.chefNameString
-        recipe_detail_tags?.text = result.tagsString
+
+        result.tags.forEach {
+            val chip = Chip(this)
+            chip.text = it
+            chip.isClickable = false
+            recipe_detail_tags.addView(chip)
+        }
 
         if (result.tagsString.isNotEmpty()) {
             recipe_detail_tags?.show()

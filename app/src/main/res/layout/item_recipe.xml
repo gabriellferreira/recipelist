@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/item_recipe_image"
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/background_rectangle_8dp_white"
         android:padding="8dp"
         tools:text="352 kcal" />

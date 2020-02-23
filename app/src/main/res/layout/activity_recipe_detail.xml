@@ -36,8 +36,6 @@
                     android:contentDescription="@string/accessibility_item_recipe_image"
                     android:transitionName="transition_recipe_image" />
 
-
-
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar
@@ -46,16 +44,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    style="@style/AppTheme.PopupOverlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp" />
-
-            </androidx.appcompat.widget.Toolbar>
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
